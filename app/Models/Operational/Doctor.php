@@ -32,4 +32,17 @@ class Doctor extends Model
        'deleted_at',
    ];
 
+   // one To Many
+   public function specialist()
+   {
+       // 3 parameters (path model, field foreign key, field primary key from model hasMany/hasOne)
+       return $this->belongsTo('App\Models\MasterData\Specialist', 'specialist_id', 'id');
+   }
+
+   // one To Many
+   public function doctor()
+   {
+       // 2 parameters (path model, field foreign key)
+       return $this->hasMany('App\Models\Operational\Appointment', 'doctor_id');
+   }
 }

@@ -2,9 +2,9 @@
 
 namespace App\Models\Operational;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Transaction extends Model
 {
@@ -34,4 +34,11 @@ class Transaction extends Model
        'updated_at',
        'deleted_at',
    ];
+
+   // one to one
+   public function specialist()
+   {
+       // 3 parameters (path model, field foreign key, field primary key from model hasMany/hasOne)
+       return $this->belongsTo('App\Models\Operational\Appointment', 'appointment_id', 'id');
+   }    
 }
