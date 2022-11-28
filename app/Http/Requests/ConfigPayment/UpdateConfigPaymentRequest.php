@@ -7,9 +7,6 @@ use App\Models\MasterData\ConfigPayment;
 use Illuminate\Foundation\Http\FormRequest;
 use Symfony\Component\HttpFoundation\Response;
 
-// this rule is only at update request 
-use Illuminate\Validation\Rule;
-
 class UpdateConfigPaymentRequest extends FormRequest
 {
     /**
