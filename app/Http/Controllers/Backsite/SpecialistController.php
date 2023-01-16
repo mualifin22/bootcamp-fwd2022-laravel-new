@@ -3,9 +3,25 @@
 namespace App\Http\Controllers\Backsite;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 
-class DashboardController extends Controller
+// use Library;
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\Response;
+
+// request
+use App\Http\Requests\Specialist\StoreSpecialistRequest;
+use App\Http\Requests\Specialist\UpdateSpecialistRequest;
+
+// user everything
+// use Gate;
+use Auth;
+
+// model here
+use App\Models\MasterData\Specialist;
+
+// third party packaage
+
+class SpecialistController extends Controller
 {
     public function __construct()
     {
@@ -18,9 +34,9 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        //abort_if(Gate::denies('dashboard_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        $specialist = Specialist::orderBy('created_at', 'desc')->get();
 
-        return view('pages.backsite.dashboard.index');
+        return view('pages.backsite.master-data.specialist.index', compact('specialist'));
     }
 
     /**
@@ -30,7 +46,7 @@ class DashboardController extends Controller
      */
     public function create()
     {
-        return abort();
+        return abort(404);
     }
 
     /**
@@ -39,9 +55,14 @@ class DashboardController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreSpecialistRequest $request)
     {
-        return abort();
+
+        // get all request from frontsite
+        $data = $request->all();
+
+        // store to database
+        $specialist = Specialist::create($data);
     }
 
     /**
@@ -52,7 +73,7 @@ class DashboardController extends Controller
      */
     public function show($id)
     {
-        return abort();
+        //
     }
 
     /**
@@ -63,7 +84,7 @@ class DashboardController extends Controller
      */
     public function edit($id)
     {
-        return abort();
+        //
     }
 
     /**
@@ -75,7 +96,7 @@ class DashboardController extends Controller
      */
     public function update(Request $request, $id)
     {
-        return abort();
+        //
     }
 
     /**
@@ -86,6 +107,6 @@ class DashboardController extends Controller
      */
     public function destroy($id)
     {
-        return abort();
+        //
     }
 }

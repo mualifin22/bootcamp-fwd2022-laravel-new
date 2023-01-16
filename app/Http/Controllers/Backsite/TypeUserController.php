@@ -3,9 +3,21 @@
 namespace App\Http\Controllers\Backsite;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 
-class DashboardController extends Controller
+// use Library;
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\Response;
+
+// user everything
+// use Gate;
+use Auth;
+
+// model here
+use App\Models\MasterData\TypeUser;
+
+// third party packaage
+
+class TypeUserController extends Controller
 {
     public function __construct()
     {
@@ -18,9 +30,11 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        //abort_if(Gate::denies('dashboard_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        $type_user = TypeUser::all();
 
-        return view('pages.backsite.dashboard.index');
+        dd($type_user);
+
+        return view('pages.backsite.management-access.specialist.index'. compact('type_user'));
     }
 
     /**
@@ -30,7 +44,7 @@ class DashboardController extends Controller
      */
     public function create()
     {
-        return abort();
+        return abort(404);
     }
 
     /**
@@ -41,7 +55,7 @@ class DashboardController extends Controller
      */
     public function store(Request $request)
     {
-        return abort();
+        return abort(404);
     }
 
     /**
@@ -52,7 +66,7 @@ class DashboardController extends Controller
      */
     public function show($id)
     {
-        return abort();
+        return abort(404);
     }
 
     /**
@@ -63,7 +77,7 @@ class DashboardController extends Controller
      */
     public function edit($id)
     {
-        return abort();
+        return abort(404);
     }
 
     /**
@@ -75,7 +89,7 @@ class DashboardController extends Controller
      */
     public function update(Request $request, $id)
     {
-        return abort();
+        return abort(404);
     }
 
     /**
@@ -86,6 +100,6 @@ class DashboardController extends Controller
      */
     public function destroy($id)
     {
-        return abort();
+        return abort(404);
     }
 }
