@@ -9,19 +9,20 @@ use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
 
 // request
-use App\Http\Requests\Specialist\StoreSpecialistRequest;
-use App\Http\Requests\Specialist\UpdateSpecialistRequest;
+use App\Http\Requests\Doctor\StoreDoctorRequest;
+use App\Http\Requests\Doctor\UpdateDoctorRequest;
 
 // user everything
 // use Gate;
 use Auth;
 
 // model here
+use App\Models\Operational\Doctor;
 use App\Models\MasterData\Specialist;
 
 // third party packaage
 
-class SpecialistController extends Controller
+class DoctorController extends Controller
 {
     public function __construct()
     {
@@ -34,9 +35,13 @@ class SpecialistController extends Controller
      */
     public function index()
     {
-        $specialist = Specialist::orderBy('created_at', 'desc')->get();
+        // for table grid
+        $doctor = doctor::orderBy('created_at', 'desc')->get();
 
-        return view('pages.backsite.master-data.specialist.index', compact('specialist'));
+        // for select2 = ascending a to z
+        $specialist = Specialist::orderBy('name', 'desc')->get();
+
+        return view('pages.backsite.operational.doctor.index', compact('doctor', 'specialist'));
     }
 
     /**
@@ -55,16 +60,16 @@ class SpecialistController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreSpecialistRequest $request)
+    public function store(StoreDoctorRequest $request)
     {
         // get all request from frontsite
         $data = $request->all();
 
         // store to database
-        $specialist = Specialist::create($data);
+        $doctor = Doctor::create($data);
 
-        alert()->success('Success Message', 'successfullly added new specialist');
-        return redirect()->route('backsite.specialist.index');
+        alert()->success('Success Message', 'successfullly added new doctor');
+        return redirect()->route('backsite.doctor.index');
     }
 
     /**
@@ -73,9 +78,9 @@ class SpecialistController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Specialist $specialist)
+    public function show(Doctor $doctor)
     {
-        return view('pages.backsite.master-data.specialist.show', compact('specialist'));
+        return view('pages.backsite.operational.doctor.show', compact('doctor'));
     }
 
     /**
@@ -84,9 +89,12 @@ class SpecialistController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Specialist $specialist)
+    public function edit(Doctor $doctor)
     {
-        return view('pages.backsite.master-data.specialist.edit', compact('specialist'));
+        // for select2 = ascending a to z
+        $specialist = Specialist::orderBy('name', 'desc')->get();
+
+        return view('pages.backsite.operational.doctor.edit', compact('doctor', 'specialist'));
     }
 
     /**
@@ -96,16 +104,16 @@ class SpecialistController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateSpecialistRequest $request, Specialist $specialist)
+    public function update(UpdateDoctorRequest $request, Doctor $doctor)
     {
         // get all request from frontsite
         $data = $request->all();
 
         // store to database
-        $specialist->update($data);
+        $doctor->update($data);
 
-        alert()->success('Success Message', 'successfullly update specialist');
-        return redirect()->route('backsite.specialist.index');
+        alert()->success('Success Message', 'successfullly update doctor');
+        return redirect()->route('backsite.doctor.index');
     }
 
     /**
@@ -118,7 +126,7 @@ class SpecialistController extends Controller
     {
         $specialist->forceDelete();
 
-        alert()->success('Success Message', 'Successfully deleted specialist');
+        alert()->success('Success Message', 'Successfully deleted doctor');
         return back();
     }
 }
