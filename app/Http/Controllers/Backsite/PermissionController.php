@@ -13,13 +13,16 @@ use Symfony\Component\HttpFoundation\Response;
 use Auth;
 
 // model here
-use App\Models\MasterData\TypeUser;
+use App\Models\ManagementAccess\Permission;
+use App\Models\ManagementAccess\PermissionRole;
+use App\Models\ManagementAccess\Role;
+use App\Models\ManagementAccess\RoleUser;
 
 // third party packaage
 
-class TypeUserController extends Controller
+class PermissionController extends Controller
 {
-    public function __construct()
+        public function __construct()
     {
         $this->middleware('auth');
     }
@@ -30,9 +33,9 @@ class TypeUserController extends Controller
      */
     public function index()
     {
-        $type_user = TypeUser::all();
+        $permission = Permission::all();
 
-        return view('pages.backsite.management-access.specialist.index'. compact('type_user'));
+        return view('pages.backsite.management-access.permission.index', compact('permission'));
     }
 
     /**

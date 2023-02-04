@@ -8,20 +8,19 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
 
-// request
-use App\Http\Requests\Specialist\StoreSpecialistRequest;
-use App\Http\Requests\Specialist\UpdateSpecialistRequest;
-
 // user everything
 // use Gate;
 use Auth;
 
 // model here
-use App\Models\MasterData\Specialist;
+use App\Models\ManagementAccess\Role;
+use App\Models\ManagementAccess\RoleUser;
+use App\Models\ManagementAccess\Permission;
+use App\Models\ManagementAccess\PermissionRole;
 
 // third party packaage
 
-class SpecialistController extends Controller
+class RoleController extends Controller
 {
     public function __construct()
     {
@@ -34,9 +33,9 @@ class SpecialistController extends Controller
      */
     public function index()
     {
-        $specialist = Specialist::orderBy('created_at', 'desc')->get();
-        dd($specialist);
-        return view('pages.backsite.master-data.specialist.index', compact('specialist'));
+        $role = Role::all();
+
+        return view('pages.backsite.management-access.role.index', compact('role'));
     }
 
     /**
@@ -55,16 +54,16 @@ class SpecialistController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreSpecialistRequest $request)
+    public function store(StoreRoleRequest $request)
     {
         // get all request from frontsite
         $data = $request->all();
 
         // store to database
-        $specialist = Specialist::create($data);
+        $role = role::create($data);
 
-        alert()->success('Success Message', 'successfullly added new specialist');
-        return redirect()->route('backsite.specialist.index');
+        alert()->success('Success Message', 'successfullly added new role');
+        return redirect()->route('backsite.role.index');
     }
 
     /**
@@ -73,9 +72,12 @@ class SpecialistController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Specialist $specialist)
+    public function show(Role $role)
     {
-        return view('pages.backsite.master-data.specialist.show', compact('specialist'));
+        // need more note here
+        $role->load('permission');
+
+        return view('pages.backsite.management-access.role.show', compact('role'));
     }
 
     /**
@@ -84,9 +86,13 @@ class SpecialistController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Specialist $specialist)
+    public function edit(Role $role)
     {
-        return view('pages.backsite.master-data.specialist.edit', compact('specialist'));
+        // need more note here
+        $permission = Permission::all();
+        $role->load('permission');
+
+        return view('pages.backsite.management-access.role.edit', compact('role'));
     }
 
     /**
@@ -96,16 +102,14 @@ class SpecialistController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateSpecialistRequest $request, Specialist $specialist)
+    public function update(UpdateRoleRequest $request, Role $role)
     {
-        // get all request from frontsite
-        $data = $request->all();
+        // need more notes here
+        $role->update($request->all());
+        $role->permission()->sync($request->input('permission', []));
 
-        // store to database
-        $specialist->update($data);
-
-        alert()->success('Success Message', 'successfullly update specialist');
-        return redirect()->route('backsite.specialist.index');
+        alert()->success('Success Message', 'successfullly update role');
+        return redirect()->route('backsite.role.index');
     }
 
     /**
@@ -114,11 +118,11 @@ class SpecialistController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Specialist $specialist)
+    public function destroy(Role $role)
     {
-        $specialist->forceDelete();
+        $role->forceDelete();
 
-        alert()->success('Success Message', 'Successfully deleted specialist');
+        alert()->success('Success Message', 'Successfully deleted role');
         return back();
     }
 }

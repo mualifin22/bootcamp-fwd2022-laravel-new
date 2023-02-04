@@ -13,11 +13,15 @@ use Symfony\Component\HttpFoundation\Response;
 use Auth;
 
 // model here
-use App\Models\MasterData\TypeUser;
+use App\Models\User;
+use App\Models\Operational\Appointment;
+use App\Models\Operational\Transaction;
+use App\Models\Operational\Doctor;
+use App\Models\MasterData\Specialist;
+use App\Models\MasterData\Consultation;
+use App\Models\MasterData\ConfigPayment;    
 
-// third party packaage
-
-class TypeUserController extends Controller
+class HospitalPatientController extends Controller
 {
     public function __construct()
     {
@@ -30,9 +34,14 @@ class TypeUserController extends Controller
      */
     public function index()
     {
-        $type_user = TypeUser::all();
-
-        return view('pages.backsite.management-access.specialist.index'. compact('type_user'));
+        // for table grid
+        $hospital_patient = user::whereHas('detail_user', function (Builder $query) {
+            $query->where('type_user_id', 3); // only load user type patient or id 3 in type user table
+        })
+            ->orderBy('created_at', 'desc')
+            ->get();
+            
+        return view('pages.backsite.operational.hospital-patient.index', compact('transaction'));
     }
 
     /**

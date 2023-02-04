@@ -9,19 +9,18 @@ use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
 
 // request
-use App\Http\Requests\Specialist\StoreSpecialistRequest;
-use App\Http\Requests\Specialist\UpdateSpecialistRequest;
+use App\Http\Requests\ConfigPayment\UpdateConfigPaymentRequest;
 
 // user everything
 // use Gate;
 use Auth;
 
 // model here
-use App\Models\MasterData\Specialist;
+use App\Models\MasterData\ConfigPayment;
 
 // third party packaage
 
-class SpecialistController extends Controller
+class ConfigPaymentController extends Controller
 {
     public function __construct()
     {
@@ -34,9 +33,9 @@ class SpecialistController extends Controller
      */
     public function index()
     {
-        $specialist = Specialist::orderBy('created_at', 'desc')->get();
-        dd($specialist);
-        return view('pages.backsite.master-data.specialist.index', compact('specialist'));
+        $config_payment = ConfigPayment::all();
+
+        return view('pages.backsite.master-data.config-payment.index', compact('config_payment'));
     }
 
     /**
@@ -55,16 +54,9 @@ class SpecialistController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreSpecialistRequest $request)
+    public function store(Request $request)
     {
-        // get all request from frontsite
-        $data = $request->all();
-
-        // store to database
-        $specialist = Specialist::create($data);
-
-        alert()->success('Success Message', 'successfullly added new specialist');
-        return redirect()->route('backsite.specialist.index');
+        return abort(404);
     }
 
     /**
@@ -73,9 +65,10 @@ class SpecialistController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Specialist $specialist)
+    public function show($id)
     {
-        return view('pages.backsite.master-data.specialist.show', compact('specialist'));
+
+        return abort(404);
     }
 
     /**
@@ -84,9 +77,9 @@ class SpecialistController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Specialist $specialist)
+    public function edit(ConfigPayment $config_payment)
     {
-        return view('pages.backsite.master-data.specialist.edit', compact('specialist'));
+        return view('pages.backsite.master-data.config-payment.edit', compact('config_payment'));
     }
 
     /**
@@ -96,16 +89,16 @@ class SpecialistController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateSpecialistRequest $request, Specialist $specialist)
+    public function update(UpdateConfigPaymentRequest $request, ConfigPayment $config_payment)
     {
         // get all request from frontsite
         $data = $request->all();
 
         // store to database
-        $specialist->update($data);
+        $config-payment->update($data);
 
-        alert()->success('Success Message', 'successfullly update specialist');
-        return redirect()->route('backsite.specialist.index');
+        alert()->success('Success Message', 'successfullly update config payment');
+        return redirect()->route('backsite.config-payment.index');
     }
 
     /**
@@ -114,11 +107,8 @@ class SpecialistController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Specialist $specialist)
+    public function destroy($id)
     {
-        $specialist->forceDelete();
-
-        alert()->success('Success Message', 'Successfully deleted specialist');
-        return back();
+        return abort(404);
     }
 }

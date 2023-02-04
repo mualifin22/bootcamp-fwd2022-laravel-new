@@ -3,26 +3,10 @@
 namespace App\Http\Controllers\Backsite;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
-// use Library;
-use Illuminate\Support\Facades\Storage;
-use Symfony\Component\HttpFoundation\Response;
-
-// user everything
-// use Gate;
-use Auth;
-
-// model here
-use App\Models\MasterData\TypeUser;
-
-// third party packaage
-
-class TypeUserController extends Controller
+class ReportAppointmentController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
     /**
      * Display a listing of the resource.
      *
@@ -30,9 +14,7 @@ class TypeUserController extends Controller
      */
     public function index()
     {
-        $type_user = TypeUser::all();
-
-        return view('pages.backsite.management-access.specialist.index'. compact('type_user'));
+        //
     }
 
     /**
@@ -42,7 +24,7 @@ class TypeUserController extends Controller
      */
     public function create()
     {
-        return abort(404);
+        //
     }
 
     /**
@@ -53,7 +35,7 @@ class TypeUserController extends Controller
      */
     public function store(Request $request)
     {
-        return abort(404);
+        //
     }
 
     /**
@@ -64,7 +46,7 @@ class TypeUserController extends Controller
      */
     public function show($id)
     {
-        return abort(404);
+        //
     }
 
     /**
@@ -75,7 +57,7 @@ class TypeUserController extends Controller
      */
     public function edit($id)
     {
-        return abort(404);
+        //
     }
 
     /**
@@ -87,7 +69,7 @@ class TypeUserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        return abort(404);
+        //
     }
 
     /**
@@ -98,6 +80,6 @@ class TypeUserController extends Controller
      */
     public function destroy($id)
     {
-        return abort(404);
+        //
     }
 }

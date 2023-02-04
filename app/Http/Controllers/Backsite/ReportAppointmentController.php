@@ -4,25 +4,35 @@ namespace App\Http\Controllers\Backsite;
 
 use App\Http\Controllers\Controller;
 
-// use Library;
+// use library here
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
 
-// user everything
-// use Gate;
+// use everything here
+use Gate;
 use Auth;
 
-// model here
-use App\Models\MasterData\TypeUser;
+// use model here
+use App\Models\Operational\Appointment;
+use App\Models\Operational\Doctor;
+use App\Models\Operational\Transaction;
+use App\Models\User;
+use App\Models\MasterData\Consultation;
 
-// third party packaage
+// thirdparty package
 
-class TypeUserController extends Controller
+class ReportAppointmentController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
     public function __construct()
     {
         $this->middleware('auth');
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -30,9 +40,19 @@ class TypeUserController extends Controller
      */
     public function index()
     {
-        $type_user = TypeUser::all();
+        abort_if(Gate::denies('appointment_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return view('pages.backsite.management-access.specialist.index'. compact('type_user'));
+        $type_user_condition = Auth::user()->detail_user->type_user_id;
+
+        if($type_user_condition == 1){
+            // for admin
+            $appointment = Appointment::orderBy('created_at', 'desc')->get();
+        }else{
+            // other admin for doctor & patient ( task for everyone here )
+            $appointment = Appointment::orderBy('created_at', 'desc')->get();
+        }
+
+        return view('pages.backsite.operational.appointment.index', compact('appointment'));
     }
 
     /**

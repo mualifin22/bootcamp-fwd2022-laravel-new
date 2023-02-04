@@ -9,21 +9,21 @@ use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
 
 // request
-use App\Http\Requests\Specialist\StoreSpecialistRequest;
-use App\Http\Requests\Specialist\UpdateSpecialistRequest;
+use App\Http\Requests\Consultation\StoreConsultationRequest;
+use App\Http\Requests\Consultation\UpdateConsulationRequest;
 
 // user everything
 // use Gate;
 use Auth;
 
 // model here
-use App\Models\MasterData\Specialist;
+use App\Models\MasterData\Consultation;
 
 // third party packaage
 
-class SpecialistController extends Controller
+class ConsultationController extends Controller
 {
-    public function __construct()
+        public function __construct()
     {
         $this->middleware('auth');
     }
@@ -34,9 +34,9 @@ class SpecialistController extends Controller
      */
     public function index()
     {
-        $specialist = Specialist::orderBy('created_at', 'desc')->get();
-        dd($specialist);
-        return view('pages.backsite.master-data.specialist.index', compact('specialist'));
+        $consultation = consultation::orderBy('created_at', 'desc')->get();
+
+        return view('pages.backsite.master-data.consultation.index'. compact('consultation'));
     }
 
     /**
@@ -55,16 +55,16 @@ class SpecialistController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreSpecialistRequest $request)
+    public function store(StoreConsultationRequest $request)
     {
         // get all request from frontsite
         $data = $request->all();
 
         // store to database
-        $specialist = Specialist::create($data);
+        $consultation = Consultation::create($data);
 
-        alert()->success('Success Message', 'successfullly added new specialist');
-        return redirect()->route('backsite.specialist.index');
+        alert()->success('Success Message', 'successfullly added new consultation');
+        return redirect()->route('backsite.consultation.index');
     }
 
     /**
@@ -73,9 +73,9 @@ class SpecialistController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Specialist $specialist)
+    public function show(Consultation $consultation)
     {
-        return view('pages.backsite.master-data.specialist.show', compact('specialist'));
+        return view('pages.backsite.master-data.consultation.show', compact('consultation'));
     }
 
     /**
@@ -84,9 +84,9 @@ class SpecialistController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Specialist $specialist)
+    public function edit(Consultation $consultation)
     {
-        return view('pages.backsite.master-data.specialist.edit', compact('specialist'));
+        return view('pages.backsite.master-data.consultation.edit', compact('consultation'));
     }
 
     /**
@@ -96,16 +96,16 @@ class SpecialistController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateSpecialistRequest $request, Specialist $specialist)
+    public function update(UpdateConsultationRequest $request, Consultation $consultation)
     {
         // get all request from frontsite
         $data = $request->all();
 
         // store to database
-        $specialist->update($data);
+        $consultation->update($data);
 
-        alert()->success('Success Message', 'successfullly update specialist');
-        return redirect()->route('backsite.specialist.index');
+        alert()->success('Success Message', 'successfullly update consultation');
+        return redirect()->route('backsite.consultation.index');
     }
 
     /**
@@ -114,11 +114,11 @@ class SpecialistController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Specialist $specialist)
+    public function destroy(Consultation $consultation)
     {
-        $specialist->forceDelete();
+        $consultation->forceDelete();
 
-        alert()->success('Success Message', 'Successfully deleted specialist');
+        alert()->success('Success Message', 'Successfully deleted consultation');
         return back();
     }
 }
